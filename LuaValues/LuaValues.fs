@@ -43,3 +43,30 @@ module LuaValues =
         |> Seq.map (fun prop -> { name = prop.Name; value = toLuaValue (prop.GetValue value) })
         |> Seq.toList
         |> LuaTable
+
+
+    /// Serliazes the list of values into a Lua chunk.
+    let private aggregateToChunk toChunk values  =
+        values |> Seq.map toChunk |> String.concat ", " |> sprintf "{%s}"  
+
+    /// Serializes the value to a Lua chunk.
+    let rec private toLuaChunk (value: LuaValue) =
+        match value with
+        | LuaBoolean(boolVal) -> sprintf "%b" boolVal
+        | LuaNumber(numberVal) -> sprintf "%G" numberVal
+        | LuaString(stringVal) -> sprintf "\"%s\"" stringVal
+        | LuaArray(arrayValues) -> aggregateToChunk toLuaChunk arrayValues
+        | LuaTable(fields) -> aggregateToChunk tableFieldToChunk fields
+
+    /// Serializes the table field so it can be placed into a Lua chunk.
+    and private tableFieldToChunk (field: TableField) =
+        sprintf "%s=%s" field.name (toLuaChunk field.value)
+
+
+    /// Converts a CLR value to a string that can be used as a Lua chunk. Primitive values such as
+    /// numbers, strings, and booleans are serialized directly to the corresponding Lua primitives.
+    /// Arrarys are serialized to Lua tables with no explicit field names. Objects are serialized
+    /// to Lua tables where the public, readable properties of the object are used as the fields
+    /// in the table with the name of the property used as the name of the table field.
+    let ToLuaChunk (value: obj) =
+        value |> toLuaValue |> toLuaChunk
