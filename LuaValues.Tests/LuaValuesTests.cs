@@ -23,6 +23,54 @@ namespace LuaValues.Tests
         }
 
         [Fact]
+        public void TestNestedAggregate()
+        {
+            var value = new {
+                message = "Hello",
+                data = new {
+                    number = 37,
+                    moreData = new {
+                        flag = false,
+                        values = new[] {37, 15, 72}
+                    }
+                }
+            };
+
+            var expected = @"{message=""Hello"", data={number=37, moreData={flag=false, values={37, 15, 72}}}}";
+
+            var actual = LuaValues.ToLuaChunk(value);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void TestArrayEmpty()
+        {
+            var value = new int[0];
+
+            var expected = "{}";
+
+            var actual = LuaValues.ToLuaChunk(value);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void TestArrayOfAggregates()
+        {
+            var value = new[] {
+                new { X = "Hello", Y = 37 },
+                new { X = "Goodbye", Y = 42 },
+            };
+
+            var expected = @"{{X=""Hello"", Y=37}, {X=""Goodbye"", Y=42}}";
+
+            var actual = LuaValues.ToLuaChunk(value);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void TestArrayOfBooleans()
         {
             var value = new [] { true, true, false };
