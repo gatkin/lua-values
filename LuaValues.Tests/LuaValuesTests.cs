@@ -23,7 +23,7 @@ namespace LuaValues.Tests
         }
 
         [Fact]
-        public void TestNestedAggregate()
+        public void TestAggregateNested()
         {
             var value = new {
                 message = "Hello",
@@ -164,6 +164,27 @@ namespace LuaValues.Tests
                 var actual = LuaValues.ToLuaChunk(value);
                 Assert.Equal(expected, actual);
             }
+        }
+
+        [Fact]
+        public void TestReadmeExample()
+        {
+            var value = new {
+                message = "Hello",
+                number = 125,
+                flag = true,
+                measurements = new[] {1.23, 4.56, 7.89},
+                subValue = new {
+                    message = "Goodbye",
+                    flag = false
+                }
+            };
+
+            var expected = @"{message=""Hello"", number=125, flag=true, measurements={1.23, 4.56, 7.89}, subValue={message=""Goodbye"", flag=false}}";
+
+            var actual = LuaValues.ToLuaChunk(value);
+
+            Assert.Equal(expected, actual);
         }
     }
 }

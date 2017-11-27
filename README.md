@@ -6,8 +6,8 @@ var value = new {
     message = "Hello",
     number = 125,
     flag = true,
-    measurements = [1.23, 4.56, 7.89],
-    subValue = {
+    measurements = new[] { 1.23, 4.56, 7.89 },
+    subValue = new {
         message = "Goodbye",
         flag = false
     }
