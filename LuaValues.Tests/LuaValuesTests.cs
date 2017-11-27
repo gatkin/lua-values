@@ -23,6 +23,54 @@ namespace LuaValues.Tests
         }
 
         [Fact]
+        public void TestArrayOfBooleans()
+        {
+            var value = new [] { true, true, false };
+            
+            var expected = "{true, true, false}";
+
+            var actual = LuaValues.ToLuaChunk(value);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void TestArrayOfFloats()
+        {
+            var value = new [] { 17.23, 42.1, 789.01 };
+            
+            var expected = "{17.23, 42.1, 789.01}";
+
+            var actual = LuaValues.ToLuaChunk(value);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void TestArrayOfIntegers()
+        {
+            var value = new [] { 17, 42, 789, 23 };
+            
+            var expected = "{17, 42, 789, 23}";
+
+            var actual = LuaValues.ToLuaChunk(value);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void TestArrayOfStrings()
+        {
+            var value = new [] { "hello", "world", "goodbye", "mars" };
+            
+            var expected = @"{""hello"", ""world"", ""goodbye"", ""mars""}";
+
+            var actual = LuaValues.ToLuaChunk(value);
+
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void TestBoolean()
         {
             var testCases = new [] {
