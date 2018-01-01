@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="LuaTypes.fs" />
+    <Compile Include="Serialize.fs" />
     <Compile Include="LuaValues.fs" />
   </ItemGroup>
 
