@@ -1,4 +1,6 @@
 # LuaValues
+[![Build status](https://ci.appveyor.com/api/projects/status/o05aikp5f4kxc8jd?svg=true)](https://ci.appveyor.com/project/gatkin/lua-values)
+
 Simple library for serializing CLR values into Lua values.
 
 ```c#
