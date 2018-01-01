@@ -1,6 +1,6 @@
 namespace LuaValues
 
-module internal Serialize =
+module Serialize =
 
     open LuaValues.LuaTypes
 
