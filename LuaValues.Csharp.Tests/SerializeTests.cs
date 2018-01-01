@@ -3,7 +3,7 @@ using Xunit;
 
 namespace LuaValues.Tests
 {
-    public class LuaValueTests
+    public class SerializeTests
     {
         [Fact]
         public void TestAggregate()
