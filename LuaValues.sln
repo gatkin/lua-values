@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LuaValues", "LuaValues\LuaValues.fsproj", "{0280E907-ECE6-4A4E-8942-5599EBC52AFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaValues.Tests", "LuaValues.Tests\LuaValues.Tests.csproj", "{42A597D8-8A37-4E4F-AAC0-9D272305C9E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaValues.Csharp.Tests", "LuaValues.Csharp.Tests\LuaValues.Csharp.Tests.csproj", "{42A597D8-8A37-4E4F-AAC0-9D272305C9E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
