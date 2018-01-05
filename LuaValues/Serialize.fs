@@ -12,6 +12,7 @@ module Serialize =
     /// Converts a CLR value to a Lua value.
     let rec private toLuaValue (value: obj) =
         match value with
+        | null -> LuaNil
         | :? bool as boolVal -> LuaBoolean(boolVal)
         | :? double as doubleVal -> LuaNumber(doubleVal)
         | :? int as intVal -> LuaNumber(double intVal)
@@ -28,7 +29,7 @@ module Serialize =
     and private toLuaTable value =
         value.GetType().GetProperties()
         |> Seq.filter (fun prop -> prop.CanRead)
-        |> Seq.map (fun prop -> { name = prop.Name; value = toLuaValue (prop.GetValue value) })
+        |> Seq.map (fun prop -> { Name = prop.Name; Value = toLuaValue (prop.GetValue value) })
         |> Seq.toList
         |> LuaTable
 
@@ -41,6 +42,7 @@ module Serialize =
     /// Serializes the value to a Lua chunk.
     let rec private toLuaChunk (value: LuaValue) =
         match value with
+        | LuaNil -> "nil"
         | LuaBoolean(boolVal) -> sprintf "%b" boolVal
         | LuaNumber(numberVal) -> sprintf "%G" numberVal
         | LuaString(stringVal) -> sprintf "\"%s\"" stringVal
@@ -50,7 +52,7 @@ module Serialize =
 
     /// Serializes the table field so it can be placed into a Lua chunk.
     and private tableFieldToChunk (field: TableField) =
-        sprintf "%s=%s" field.name (toLuaChunk field.value)
+        sprintf "%s=%s" field.Name (toLuaChunk field.Value)
 
 
     // Serializes a CLR object into a Lua chunk.

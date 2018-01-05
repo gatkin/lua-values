@@ -134,6 +134,22 @@ namespace LuaValues.Tests
         }
 
         [Fact]
+        void TestNil()
+        {
+            var actual = LuaValues.ToLuaChunk(null);
+            Assert.Equal("nil", actual);
+        }
+
+        [Fact]
+        void TestNilInAggregate()
+        {
+            var value = new { X = 1, Y = (string)null };
+            var expected = "{X=1, Y=nil}";
+            var actual = LuaValues.ToLuaChunk(value);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public void TestNumbers()
         {
             var testCases = new[] {

@@ -6,6 +6,7 @@ module LuaTypes =
     // Although arrays in Lua are just tables, arrays are represented separately
     // from tables here because they are serialized differently.
     type LuaValue =
+        | LuaNil
         | LuaBoolean of bool
         | LuaNumber of double
         | LuaString of string
@@ -14,6 +15,6 @@ module LuaTypes =
 
     and TableField =
         {
-            name: string
-            value: LuaValue
+            Name: string
+            Value: LuaValue
         }
