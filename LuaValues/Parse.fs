@@ -3,64 +3,101 @@ namespace LuaValues
 /// Parses Lua chunks into CLR values.
 module Parse =
 
-    open System
+    open FParsec
     open LuaValues.LuaTypes
 
+    (* Parsers for literals *)
+    let ws = spaces
 
-    let private removeOuterChars (text: string) =
-        if text.Length < 2 then text
-        else text.Substring (1, text.Length - 2)
+    let private pLuaNil = stringReturn "nil" LuaNil
 
+    let private pLuaFalse = stringReturn "false" (LuaBoolean false)
 
-    let private tryParseBoolean = function
-        | "true" -> Some(true)
-        | "false" -> Some(false)
-        | _ -> None
+    let private pLuaTrue = stringReturn "true" (LuaBoolean true)
 
+    let private pLuaBoolean = pLuaFalse <|> pLuaTrue
 
-    let private tryParseNumber (text: string) =
-        match Double.TryParse text with
-        | (false, _) -> None
-        | (true, value) -> Some(value)
+    let private pLuaNumber = pfloat |>> LuaNumber
 
+    let private pStringLiteral quoteChar =
+        let normalChar = satisfy (fun c -> c <> '\\' && c <> quoteChar)
 
-    let private tryParseString (text: string) =
-        if text.Length < 2 then
-            // Must have at least two characters for the quotes
-            None
-        else
-            let firstChar = text.Chars 0
-            let finalChar = text.Chars (text.Length - 1) 
-            match (firstChar, finalChar) with
-            | ('\'', '\'') | ('"', '"') -> Some(removeOuterChars text)
-            | _ -> None
+        let unEscape = function
+            | 'n' -> '\n'
+            | 'r' -> '\r'
+            | 't' -> '\t'
+            | c -> c
 
+        let escapedSet = sprintf "\\nrt%c" quoteChar
 
-    let private luaValueParser (parser: string -> 'a option) (valueType: 'a -> LuaValue) (chunk: string) =
-        parser chunk |> Option.map valueType
+        let escapedChar = pstring "\\" >>. (anyOf escapedSet |>> unEscape)
 
+        let quote = pchar quoteChar
 
-    let private luaBooleanParser =
-        luaValueParser tryParseBoolean LuaBoolean
+        between quote quote (manyChars (normalChar <|> escapedChar))
 
+    let private pDoubleQuotedChar = pStringLiteral '"'
 
-    let private luaNumberParser =
-        luaValueParser tryParseNumber LuaNumber
+    let private pSingleQuotedChar = pStringLiteral '\''
+
+    let private pLuaString = (pDoubleQuotedChar <|> pSingleQuotedChar) |>> LuaString
 
 
-    let private luaStringParser =
-        luaValueParser tryParseString LuaString
+    (* Parsers for aggregates *)
+    let private pLuaValue, pLuaValueRef = createParserForwardedToRef<LuaValue, unit>()
+
+    let private pLuaValueWs = pLuaValue .>> ws
+
+    let private pOpenBrace = pstring "{"
+
+    let private pOpenBraceWs = pOpenBrace .>> ws
+
+    let private pCloseBrace = pstring "}"
+
+    let private pCloseBraceWs = ws >>. pCloseBrace
+
+    let private pSeparator = (pstring ",") <|> (pstring ";")
+
+    let private pSeparatorWs = pSeparator .>> ws
+    
+    let private pLuaArray =
+        let pElements = sepEndBy pLuaValueWs pSeparatorWs
+        between pOpenBraceWs pCloseBraceWs pElements |>> LuaArray
+
+    let private pName = regex "[a-zA-Z_][a-zA-Z0-9_]*"
+
+    let private pNameWs = pName .>> ws
+
+    let private pEquals = pstring "="
+
+    let private pEqualsWs = pEquals .>> ws
+
+    let private pTableField =
+        pipe3 pNameWs pEqualsWs pLuaValueWs (fun name _ value -> { Name = name; Value = value })
+
+    let private pLuaAssociativeArray =
+        let pElements = sepEndBy pTableField pSeparatorWs
+
+        between pOpenBraceWs pCloseBraceWs pElements |>> LuaTable
+
+    let private pLuaTable =
+        (attempt pLuaAssociativeArray) <|> pLuaArray
 
 
-    /// Attempts to parse the given Lua chunk into a Lua value.
-    let parseValue (chunk: string) =
-        let rec parseChunk (parsers: (string -> 'a option) list) chunk =
-            match parsers with
-            | [] -> None
-            | parser :: tl ->
-                match parser chunk with
-                | None -> parseChunk tl chunk
-                | Some(value) -> Some(value)
-        
-        let parsers = [luaBooleanParser; luaNumberParser; luaStringParser]
-        parseChunk parsers chunk
+    do pLuaValueRef := choice[pLuaNil
+                              pLuaBoolean
+                              pLuaNumber
+                              pLuaTable
+                              pLuaArray
+                              pLuaString]
+
+
+    let private pLuaValueConsumeAll =
+        let valueWs = ws >>. pLuaValue .>> ws
+        valueWs .>> eof
+
+    /// Parses the given string as a Lua value.
+    let parseValue chunk =
+        match run pLuaValueConsumeAll chunk with
+        | Success(value, _, _) -> Some value
+        | Failure(_) -> None
