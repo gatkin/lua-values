@@ -7,6 +7,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LuaValues", "LuaValues\LuaV
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaValues.Csharp.Tests", "LuaValues.Csharp.Tests\LuaValues.Csharp.Tests.csproj", "{42A597D8-8A37-4E4F-AAC0-9D272305C9E7}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LuaValues.Tests", "LuaValues.Tests\LuaValues.Tests.fsproj", "{F6A34D83-E9CA-4035-A85B-88CE3492BB06}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,5 +46,17 @@ Global
 		{42A597D8-8A37-4E4F-AAC0-9D272305C9E7}.Release|x64.Build.0 = Release|x64
 		{42A597D8-8A37-4E4F-AAC0-9D272305C9E7}.Release|x86.ActiveCfg = Release|x86
 		{42A597D8-8A37-4E4F-AAC0-9D272305C9E7}.Release|x86.Build.0 = Release|x86
+		{F6A34D83-E9CA-4035-A85B-88CE3492BB06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6A34D83-E9CA-4035-A85B-88CE3492BB06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6A34D83-E9CA-4035-A85B-88CE3492BB06}.Debug|x64.ActiveCfg = Debug|x64
+		{F6A34D83-E9CA-4035-A85B-88CE3492BB06}.Debug|x64.Build.0 = Debug|x64
+		{F6A34D83-E9CA-4035-A85B-88CE3492BB06}.Debug|x86.ActiveCfg = Debug|x86
+		{F6A34D83-E9CA-4035-A85B-88CE3492BB06}.Debug|x86.Build.0 = Debug|x86
+		{F6A34D83-E9CA-4035-A85B-88CE3492BB06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6A34D83-E9CA-4035-A85B-88CE3492BB06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6A34D83-E9CA-4035-A85B-88CE3492BB06}.Release|x64.ActiveCfg = Release|x64
+		{F6A34D83-E9CA-4035-A85B-88CE3492BB06}.Release|x64.Build.0 = Release|x64
+		{F6A34D83-E9CA-4035-A85B-88CE3492BB06}.Release|x86.ActiveCfg = Release|x86
+		{F6A34D83-E9CA-4035-A85B-88CE3492BB06}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 EndGlobal

@@ -5,4 +5,5 @@ install:
 build_script:
 - cmd: dotnet build
 test_script:
+- cmd: dotnet test LuaValues.Tests
 - cmd: dotnet test LuaValues.Csharp.Tests
