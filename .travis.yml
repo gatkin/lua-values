@@ -1,0 +1,9 @@
+language: csharp
+mono: none
+dotnet: 2.1.301
+install:
+  - dotnet restore
+script:
+  - dotnet build
+  - dotnet test LuaValues.Tests
+  - dotnet test LuaValues.Csharp.Tests
