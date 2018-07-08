@@ -1,12 +1,12 @@
-using System;
-using Xunit;
+using NUnit.Framework;
 
-namespace LuaValues.Tests
+namespace LuaValues.CSharp.Tests
 {
+    [TestFixture]
     public class SerializeTests
     {
-        [Fact]
-        public void TestAggregate()
+        [Test]
+        public void Serialize_AnonymousClass()
         {
             var value = new {
                 message = "Hello",
@@ -17,13 +17,11 @@ namespace LuaValues.Tests
 
             var expected = @"{message=""Hello"", intNumber=1256, floatNumber=3.14, flag=true}";
 
-            var actual = LuaValues.ToLuaChunk(value);
-
-            Assert.Equal(expected, actual);
+            TestSerialize(value, expected);
         }
 
-        [Fact]
-        public void TestAggregateNested()
+        [Test]
+        public void Serialize_AnonymousClass_Nested()
         {
             var value = new {
                 message = "Hello",
@@ -38,25 +36,11 @@ namespace LuaValues.Tests
 
             var expected = @"{message=""Hello"", data={number=37, moreData={flag=false, values={37, 15, 72}}}}";
 
-            var actual = LuaValues.ToLuaChunk(value);
-
-            Assert.Equal(expected, actual);
+            TestSerialize(value, expected);
         }
 
-        [Fact]
-        public void TestArrayEmpty()
-        {
-            var value = new int[0];
-
-            var expected = "{}";
-
-            var actual = LuaValues.ToLuaChunk(value);
-
-            Assert.Equal(expected, actual);
-        }
-
-        [Fact]
-        public void TestArrayOfAggregates()
+        [Test]
+        public void Serialize_Array_AnonymouClass()
         {
             var value = new[] {
                 new { X = "Hello", Y = 37 },
@@ -65,60 +49,60 @@ namespace LuaValues.Tests
 
             var expected = @"{{X=""Hello"", Y=37}, {X=""Goodbye"", Y=42}}";
 
-            var actual = LuaValues.ToLuaChunk(value);
-
-            Assert.Equal(expected, actual);
+            TestSerialize(value, expected);
         }
 
-        [Fact]
-        public void TestArrayOfBooleans()
+        [Test]
+        public void Serailize_Array_Booleans()
         {
             var value = new [] { true, true, false };
             
             var expected = "{true, true, false}";
 
-            var actual = LuaValues.ToLuaChunk(value);
-
-            Assert.Equal(expected, actual);
+            TestSerialize(value, expected);
         }
 
-        [Fact]
-        public void TestArrayOfFloats()
+        [Test]
+        public void Serialize_Array_Empty()
+        {
+            var value = new int[0];
+
+            var expected = "{}";
+
+            TestSerialize(value, expected);
+        }
+
+        [Test]
+        public void Serialize_Array_Floats()
         {
             var value = new [] { 17.23, 42.1, 789.01 };
             
             var expected = "{17.23, 42.1, 789.01}";
 
-            var actual = LuaValues.ToLuaChunk(value);
-
-            Assert.Equal(expected, actual);
+            TestSerialize(value, expected);
         }
 
-        [Fact]
-        public void TestArrayOfIntegers()
+        [Test]
+        public void Serialize_Array_Integers()
         {
             var value = new [] { 17, 42, 789, 23 };
             
             var expected = "{17, 42, 789, 23}";
 
-            var actual = LuaValues.ToLuaChunk(value);
-
-            Assert.Equal(expected, actual);
+            TestSerialize(value, expected);
         }
 
-        [Fact]
-        public void TestArrayOfStrings()
+        [Test]
+        public void Serialize_Array_Strings()
         {
             var value = new [] { "hello", "world", "goodbye", "mars" };
             
             var expected = @"{""hello"", ""world"", ""goodbye"", ""mars""}";
 
-            var actual = LuaValues.ToLuaChunk(value);
-
-            Assert.Equal(expected, actual);
+            TestSerialize(value, expected);
         }
 
-        [Fact]
+        [Test]
         public void TestBoolean()
         {
             var testCases = new [] {
@@ -128,28 +112,25 @@ namespace LuaValues.Tests
 
             foreach (var (value, expected) in testCases)
             {
-                var actual = LuaValues.ToLuaChunk(value);
-                Assert.Equal(expected, actual);
+                TestSerialize(value, expected);
             }
         }
 
-        [Fact]
-        void TestNil()
+        [Test]
+        public void TestNil()
         {
-            var actual = LuaValues.ToLuaChunk(null);
-            Assert.Equal("nil", actual);
+            TestSerialize(null, "nil");
         }
 
-        [Fact]
-        void TestNilInAggregate()
+        [Test]
+        public void TestNilInAggregate()
         {
             var value = new { X = 1, Y = (string)null };
             var expected = "{X=1, Y=nil}";
-            var actual = LuaValues.ToLuaChunk(value);
-            Assert.Equal(expected, actual);
+            TestSerialize(value, expected);
         }
 
-        [Fact]
+        [Test]
         public void TestNumbers()
         {
             var testCases = new[] {
@@ -162,12 +143,11 @@ namespace LuaValues.Tests
 
             foreach (var (value, expected) in testCases)
             {
-                var actual = LuaValues.ToLuaChunk(value);
-                Assert.Equal(expected, actual);
+                TestSerialize(value, expected);
             }
         }
 
-        [Fact]
+        [Test]
         public void TestStrings()
         {
             var testCases = new[] {
@@ -177,12 +157,11 @@ namespace LuaValues.Tests
 
             foreach (var (value, expected) in testCases)
             {
-                var actual = LuaValues.ToLuaChunk(value);
-                Assert.Equal(expected, actual);
+                TestSerialize(value, expected);
             }
         }
 
-        [Fact]
+        [Test]
         public void TestReadmeExample()
         {
             var value = new {
@@ -198,9 +177,13 @@ namespace LuaValues.Tests
 
             var expected = @"{message=""Hello"", number=125, flag=true, measurements={1.23, 4.56, 7.89}, subValue={message=""Goodbye"", flag=false}}";
 
-            var actual = LuaValues.ToLuaChunk(value);
+            TestSerialize(value, expected);
+        }
 
-            Assert.Equal(expected, actual);
+        private void TestSerialize(object value, string expected)
+        {
+            var actual = LuaValues.ToLuaChunk(value);
+            Assert.AreEqual(expected, actual);
         }
     }
 }

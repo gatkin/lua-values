@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LuaValues", "LuaValues\LuaValues.fsproj", "{0280E907-ECE6-4A4E-8942-5599EBC52AFC}"
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "LuaValues", "LuaValues\LuaValues.fsproj", "{0280E907-ECE6-4A4E-8942-5599EBC52AFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaValues.Csharp.Tests", "LuaValues.Csharp.Tests\LuaValues.Csharp.Tests.csproj", "{42A597D8-8A37-4E4F-AAC0-9D272305C9E7}"
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "LuaValues.Tests", "LuaValues.Tests\LuaValues.Tests.fsproj", "{F6A34D83-E9CA-4035-A85B-88CE3492BB06}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LuaValues.Tests", "LuaValues.Tests\LuaValues.Tests.fsproj", "{F6A34D83-E9CA-4035-A85B-88CE3492BB06}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaValues.CSharp.Tests", "LuaValues.CSharp.Tests\LuaValues.CSharp.Tests.csproj", "{0E5581FE-6EFF-46C9-B9E3-94BC6E6CC6D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,5 +58,17 @@ Global
 		{F6A34D83-E9CA-4035-A85B-88CE3492BB06}.Release|x64.Build.0 = Release|x64
 		{F6A34D83-E9CA-4035-A85B-88CE3492BB06}.Release|x86.ActiveCfg = Release|x86
 		{F6A34D83-E9CA-4035-A85B-88CE3492BB06}.Release|x86.Build.0 = Release|x86
+		{0E5581FE-6EFF-46C9-B9E3-94BC6E6CC6D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E5581FE-6EFF-46C9-B9E3-94BC6E6CC6D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E5581FE-6EFF-46C9-B9E3-94BC6E6CC6D3}.Debug|x64.ActiveCfg = Debug|x64
+		{0E5581FE-6EFF-46C9-B9E3-94BC6E6CC6D3}.Debug|x64.Build.0 = Debug|x64
+		{0E5581FE-6EFF-46C9-B9E3-94BC6E6CC6D3}.Debug|x86.ActiveCfg = Debug|x86
+		{0E5581FE-6EFF-46C9-B9E3-94BC6E6CC6D3}.Debug|x86.Build.0 = Debug|x86
+		{0E5581FE-6EFF-46C9-B9E3-94BC6E6CC6D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E5581FE-6EFF-46C9-B9E3-94BC6E6CC6D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E5581FE-6EFF-46C9-B9E3-94BC6E6CC6D3}.Release|x64.ActiveCfg = Release|x64
+		{0E5581FE-6EFF-46C9-B9E3-94BC6E6CC6D3}.Release|x64.Build.0 = Release|x64
+		{0E5581FE-6EFF-46C9-B9E3-94BC6E6CC6D3}.Release|x86.ActiveCfg = Release|x86
+		{0E5581FE-6EFF-46C9-B9E3-94BC6E6CC6D3}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 EndGlobal
