@@ -1,0 +1,9 @@
+language: fsharp
+mono: none
+dotnet: latest
+install:
+  - dotnet restore
+script:
+  - dotnet build
+  - dotnet test LuaValues.Tests
+  - dotnet test LuaValues.Csharp.Tests
