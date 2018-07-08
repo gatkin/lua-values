@@ -1,6 +1,6 @@
 using NUnit.Framework;
 
-namespace LuaValues.CSharp.Tests
+namespace Tests
 {
     [TestFixture]
     public class SerializeTests
@@ -73,7 +73,7 @@ namespace LuaValues.CSharp.Tests
         }
 
         [Test]
-        public void Serialize_Array_Floats()
+        public void Serialize_Array_Doubles()
         {
             var value = new [] { 17.23, 42.1, 789.01 };
             
@@ -103,7 +103,7 @@ namespace LuaValues.CSharp.Tests
         }
 
         [Test]
-        public void TestBoolean()
+        public void Serialize_Boolean()
         {
             var testCases = new [] {
                 (true, "true"),
@@ -117,21 +117,7 @@ namespace LuaValues.CSharp.Tests
         }
 
         [Test]
-        public void TestNil()
-        {
-            TestSerialize(null, "nil");
-        }
-
-        [Test]
-        public void TestNilInAggregate()
-        {
-            var value = new { X = 1, Y = (string)null };
-            var expected = "{X=1, Y=nil}";
-            TestSerialize(value, expected);
-        }
-
-        [Test]
-        public void TestNumbers()
+        public void Serialize_Double()
         {
             var testCases = new[] {
                     (1, "1"),
@@ -139,6 +125,7 @@ namespace LuaValues.CSharp.Tests
                     (3.14, "3.14"),
                     (5.29E-05, "5.29E-05"),
                     (1.7E07, "1.7E+07"),
+                    (-18.98, "-18.98"),
                 };
 
             foreach (var (value, expected) in testCases)
@@ -148,11 +135,27 @@ namespace LuaValues.CSharp.Tests
         }
 
         [Test]
-        public void TestStrings()
+        public void Serialize_Nil()
+        {
+            TestSerialize(null, "nil");
+        }
+
+        [Test]
+        public void Serialize_Nil_InAggregate()
+        {
+            var value = new { X = 1, Y = (string)null };
+            var expected = "{X=1, Y=nil}";
+            TestSerialize(value, expected);
+        }
+
+        [Test]
+        public void Serialize_String()
         {
             var testCases = new[] {
                 ("hello", @"""hello"""),
+                ("A", @"""A"""),
                 ("", @""""""),
+                ("Hello, 世界", @"""Hello, 世界"""),
             };
 
             foreach (var (value, expected) in testCases)
@@ -182,7 +185,7 @@ namespace LuaValues.CSharp.Tests
 
         private void TestSerialize(object value, string expected)
         {
-            var actual = LuaValues.ToLuaChunk(value);
+            var actual = LuaValues.LuaValues.ToLuaChunk(value);
             Assert.AreEqual(expected, actual);
         }
     }
