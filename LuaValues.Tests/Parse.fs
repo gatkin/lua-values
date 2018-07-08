@@ -1,6 +1,5 @@
 module Tests
 
-open System
 open Xunit
 open LuaValues.LuaTypes
 open LuaValues.Parse
@@ -12,7 +11,6 @@ let private testParse input expected =
 
 let private testSuccess input expected =
     testParse input (Some expected)
-
 
 [<Fact>]
 let ``Parse nil`` () =
